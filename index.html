@@ -47,103 +47,131 @@
 </head>
 <body class="bg-black text-white p-4 flex items-center justify-center min-h-screen">
 
-    <!-- Main container with reduced max-width and padding for mobile -->
-    <div class="w-full max-w-sm bg-gray-900 rounded-2xl shadow-2xl border border-zinc-800 p-5">
+    <!-- 
+      Main container
+      - Mobile: max-w-sm (small, single column)
+      - Desktop: md:max-w-3xl (wider, for two columns)
+    -->
+    <div class="w-full max-w-sm bg-gray-900 rounded-2xl shadow-2xl border border-zinc-800 p-5 md:max-w-3xl md:p-8">
         
-        <!-- Header (compacted) -->
-        <div class="text-center mb-5">
-            <h1 class="text-2xl font-extrabold text-white mb-1">Possible Studio</h1>
-            <h2 class="text-lg font-bold text-yellow-500">Monthly Package</h2>
+        <!-- 
+          Header
+          - Mobile: text-center
+          - Desktop: md:text-left
+        -->
+        <div class="text-center mb-5 md:text-left md:mb-6">
+            <h1 class="text-2xl font-extrabold text-white mb-1 md:text-3xl">Possible Studio</h1>
+            <h2 class="text-lg font-bold text-yellow-500 md:text-xl">Monthly Package</h2>
         </div>
 
-        <!-- Main Form (reduced spacing) -->
-        <div class="space-y-5">
-            
-            <!-- 1. Camera Setup -->
-            <div class="space-y-3">
-                <label class="block text-base font-semibold text-gray-300">1. Camera Setup</label>
-                <div class="grid grid-cols-3 gap-2">
-                    <button id="cam-1" class="btn-toggle btn-toggle-active w-full py-2 px-1 rounded-lg font-bold text-sm" onclick="setCameras(1)">
-                        Single Camera
-                    </button>
-                    <button id="cam-2" class="btn-toggle btn-toggle-inactive w-full py-2 px-1 rounded-lg font-bold text-sm" onclick="setCameras(2)">
-                        2 Camera
-                    </button>
-                    <button id="cam-3" class="btn-toggle btn-toggle-inactive w-full py-2 px-1 rounded-lg font-bold text-sm" onclick="setCameras(3)">
-                        3 Camera
-                    </button>
-                </div>
-            </div>
+        <!-- 
+          Responsive Layout Wrapper
+          - Mobile: Stacks children vertically (default block behavior)
+          - Desktop: md:grid md:grid-cols-2 (creates 2-column layout)
+        -->
+        <div class="space-y-5 md:grid md:grid-cols-2 md:gap-6 md:space-y-0">
 
-            <!-- 2. Package Details (Consolidated Block) -->
-            <div class="space-y-3 bg-zinc-800 rounded-lg p-4">
+            <!-- === LEFT COLUMN (Inputs) === -->
+            <!-- 
+              On mobile, this div's children stack with space-y-5.
+              On desktop, this whole div becomes the first column.
+            -->
+            <div class="space-y-5 md:col-span-1">
                 
-                <!-- Reels -->
-                <div class="flex justify-between items-center">
-                    <label class="text-base font-medium text-gray-300">Reels (Min 5)</label>
-                    <div class="flex items-center space-x-3">
-                        <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('reels', -1)">-</button>
-                        <span id="reels-count" class="count-display text-yellow-500 text-center">5</span>
-                        <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('reels', 1)">+</button>
+                <!-- 1. Camera Setup -->
+                <div class="space-y-3">
+                    <label class="block text-base font-semibold text-gray-300">1. Camera Setup</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button id="cam-1" class="btn-toggle btn-toggle-active w-full py-2 px-1 rounded-lg font-bold text-sm" onclick="setCameras(1)">
+                            Single Camera
+                        </button>
+                        <button id="cam-2" class="btn-toggle btn-toggle-inactive w-full py-2 px-1 rounded-lg font-bold text-sm" onclick="setCameras(2)">
+                            2 Camera
+                        </button>
+                        <button id="cam-3" class="btn-toggle btn-toggle-inactive w-full py-2 px-1 rounded-lg font-bold text-sm" onclick="setCameras(3)">
+                            3 Camera
+                        </button>
                     </div>
                 </div>
 
-                <hr class="border-zinc-700">
-
-                <!-- Full Length Videos (with checkbox) -->
-                <div class="space-y-2">
+                <!-- 2. Package Details (Consolidated Block) -->
+                <div class="space-y-3 bg-zinc-800 rounded-lg p-4">
+                    
+                    <!-- Reels -->
                     <div class="flex justify-between items-center">
-                        <div>
-                            <label class="text-base font-medium text-gray-300">Full Length Videos</label>
-                            <p class="text-xs text-gray-400" style="margin-top: -2px;">8-15 min. (Over 15 min = 2 videos)</p>
-                        </div>
+                        <label class="text-base font-medium text-gray-300">Reels (Min 5)</label>
                         <div class="flex items-center space-x-3">
-                            <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('fullLength', -1)">-</button>
-                            <span id="full-length-count" class="count-display text-yellow-500 text-center">0</span>
-                            <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('fullLength', 1)">+</button>
+                            <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('reels', -1)">-</button>
+                            <span id="reels-count" class="count-display text-yellow-500 text-center">5</span>
+                            <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('reels', 1)">+</button>
                         </div>
                     </div>
-                    <!-- Total Duration -->
-                    <div id="duration-container" class="text-right text-sm text-yellow-500 font-medium" style="margin-top: -4px; padding-right: 2px; display: none;">
-                        Total Duration: <span id="full-length-duration">0 mins</span>
+
+                    <hr class="border-zinc-700">
+
+                    <!-- Full Length Videos (with checkbox) -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <label class="text-base font-medium text-gray-300">Full Length Videos</label>
+                                <p class="text-xs text-gray-400" style="margin-top: -2px;">8-15 min. (Over 15 min = 2 videos)</p>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('fullLength', -1)">-</button>
+                                <span id="full-length-count" class="count-display text-yellow-500 text-center">0</span>
+                                <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('fullLength', 1)">+</button>
+                            </div>
+                        </div>
+                        <!-- Total Duration -->
+                        <div id="duration-container" class="text-right text-sm text-yellow-500 font-medium" style="margin-top: -4px; padding-right: 2px; display: none;">
+                            Total Duration: <span id="full-length-duration">0 mins</span>
+                        </div>
+                        <!-- "Same Shoot" Checkbox -->
+                        <div id="same-shoot-container" class="flex items-center space-x-2 pt-1 pl-1">
+                            <input type="checkbox" id="same-shoot" class="checkbox-custom" checked onchange="calculatePrice()">
+                            <label for="same-shoot" class="text-gray-300 text-sm">Same video for reel and Full length video</label>
+                        </div>
                     </div>
-                    <!-- "Same Shoot" Checkbox -->
-                    <div id="same-shoot-container" class="flex items-center space-x-2 pt-1 pl-1">
-                        <input type="checkbox" id="same-shoot" class="checkbox-custom" checked onchange="calculatePrice()">
-                        <label for="same-shoot" class="text-gray-300 text-sm">Same video for reel and Full length video</label>
+
+                    <hr class="border-zinc-700">
+
+                    <!-- Posters -->
+                    <div class="flex justify-between items-center">
+                        <label class="text-base font-medium text-gray-300">Posters</label>
+                        <div class="flex items-center space-x-3">
+                            <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('posters', -1)">-</button>
+                            <span id="posters-count" class="count-display text-yellow-500 text-center">0</span>
+                            <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('posters', 1)">+</button>
+                        </div>
                     </div>
                 </div>
+            </div> <!-- End Left Column -->
 
-                <hr class="border-zinc-700">
 
-                <!-- Posters -->
-                <div class="flex justify-between items-center">
-                    <label class="text-base font-medium text-gray-300">Posters</label>
-                    <div class="flex items-center space-x-3">
-                        <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('posters', -1)">-</button>
-                        <span id="posters-count" class="count-display text-yellow-500 text-center">0</span>
-                        <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('posters', 1)">+</button>
+            <!-- === RIGHT COLUMN (Estimation) === -->
+            <!-- 
+              On mobile, this div stacks below the left column.
+              On desktop, this becomes the second column.
+            -->
+            <div class="md:col-span-1">
+                <!-- Estimation (Compacted) -->
+                <div class="bg-zinc-800 rounded-lg p-4">
+                    <div class="grid grid-cols-2 divide-x divide-zinc-700 text-center">
+                        <div class="pr-2">
+                            <div class="text-sm font-medium text-gray-400">Allotted Shoot Time</div>
+                            <div id="shoot-time" class="text-2xl font-extrabold text-white mt-1">0 Hrs</div>
+                        </div>
+                        <div class="pl-2">
+                            <div class="text-sm font-medium text-gray-400">Total Estimation</div>
+                            <div id="total-price" class="text-2xl font-extrabold text-yellow-500 mt-1">₹0</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div> <!-- End Right Column -->
 
+        </div> <!-- End Responsive Layout Wrapper -->
 
-            <!-- Estimation (Compacted) -->
-            <div class="bg-zinc-800 rounded-lg p-4">
-                <div class="grid grid-cols-2 divide-x divide-zinc-700 text-center">
-                    <div class="pr-2">
-                        <div class="text-sm font-medium text-gray-400">Allotted Shoot Time</div>
-                        <div id="shoot-time" class="text-2xl font-extrabold text-white mt-1">0 Hrs</div>
-                    </div>
-                    <div class="pl-2">
-                        <div class="text-sm font-medium text-gray-400">Total Estimation</div>
-                        <div id="total-price" class="text-2xl font-extrabold text-yellow-500 mt-1">₹0</div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
+    </div> <!-- End Main Container -->
 
     <script>
         // --- STATE ---
