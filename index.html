@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-black">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Studio Package Calculator</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom styles for a cohesive look */
+        .btn-toggle {
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .btn-toggle-active {
+            background-color: #eab308; /* yellow-500 */
+            color: #000000;
+        }
+        .btn-toggle-inactive {
+            background-color: #3f3f46; /* zinc-700 */
+            color: #ffffff;
+        }
+        /* Compacted button styles */
+        .btn-count {
+            width: 2.75rem; /* 44px */
+            height: 2.75rem; /* 44px */
+            font-size: 1.5rem; /* 24px */
+            line-height: 1;
+            flex-shrink: 0; /* Prevent shrinking in flexbox */
+        }
+        /* Compacted count display */
+        .count-display {
+            min-width: 40px;
+            font-size: 1.5rem; /* 24px */
+            font-weight: 700;
+        }
+        .checkbox-custom {
+            width: 1.25em; /* 20px */
+            height: 1.25em;
+            accent-color: #eab308;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body class="bg-black text-white p-4 flex items-center justify-center min-h-screen">
+
+    <!-- Main container with reduced max-width and padding for mobile -->
+    <div class="w-full max-w-sm bg-gray-900 rounded-2xl shadow-2xl border border-zinc-800 p-5">
+        
+        <!-- Header (compacted) -->
+        <div class="text-center mb-5">
+            <h1 class="text-2xl font-extrabold text-white mb-1">Possible Studio</h1>
+            <h2 class="text-lg font-bold text-yellow-500">Monthly Package</h2>
+        </div>
+
+        <!-- Main Form (reduced spacing) -->
+        <div class="space-y-5">
+            
+            <!-- 1. Camera Setup -->
+            <div class="space-y-3">
+                <label class="block text-base font-semibold text-gray-300">1. Camera Setup</label>
+                <div class="grid grid-cols-3 gap-2">
+                    <button id="cam-1" class="btn-toggle btn-toggle-active w-full py-2 px-1 rounded-lg font-bold text-sm" onclick="setCameras(1)">
+                        Single Camera
+                    </button>
+                    <button id="cam-2" class="btn-toggle btn-toggle-inactive w-full py-2 px-1 rounded-lg font-bold text-sm" onclick="setCameras(2)">
+                        2 Camera
+                    </button>
+                    <button id="cam-3" class="btn-toggle btn-toggle-inactive w-full py-2 px-1 rounded-lg font-bold text-sm" onclick="setCameras(3)">
+                        3 Camera
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. Package Details (Consolidated Block) -->
+            <div class="space-y-3 bg-zinc-800 rounded-lg p-4">
+                
+                <!-- Reels -->
+                <div class="flex justify-between items-center">
+                    <label class="text-base font-medium text-gray-300">Reels (Min 5)</label>
+                    <div class="flex items-center space-x-3">
+                        <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('reels', -1)">-</button>
+                        <span id="reels-count" class="count-display text-yellow-500 text-center">5</span>
+                        <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('reels', 1)">+</button>
+                    </div>
+                </div>
+
+                <hr class="border-zinc-700">
+
+                <!-- Full Length Videos (with checkbox) -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <label class="text-base font-medium text-gray-300">Full Length Videos</label>
+                            <p class="text-xs text-gray-400" style="margin-top: -2px;">8-15 min. (Over 15 min = 2 videos)</p>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('fullLength', -1)">-</button>
+                            <span id="full-length-count" class="count-display text-yellow-500 text-center">0</span>
+                            <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('fullLength', 1)">+</button>
+                        </div>
+                    </div>
+                    <!-- Total Duration -->
+                    <div id="duration-container" class="text-right text-sm text-yellow-500 font-medium" style="margin-top: -4px; padding-right: 2px; display: none;">
+                        Total Duration: <span id="full-length-duration">0 mins</span>
+                    </div>
+                    <!-- "Same Shoot" Checkbox -->
+                    <div id="same-shoot-container" class="flex items-center space-x-2 pt-1 pl-1">
+                        <input type="checkbox" id="same-shoot" class="checkbox-custom" checked onchange="calculatePrice()">
+                        <label for="same-shoot" class="text-gray-300 text-sm">Same video for reel and Full length video</label>
+                    </div>
+                </div>
+
+                <hr class="border-zinc-700">
+
+                <!-- Posters -->
+                <div class="flex justify-between items-center">
+                    <label class="text-base font-medium text-gray-300">Posters</label>
+                    <div class="flex items-center space-x-3">
+                        <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('posters', -1)">-</button>
+                        <span id="posters-count" class="count-display text-yellow-500 text-center">0</span>
+                        <button class="btn-count bg-zinc-700 text-yellow-500 rounded-full font-bold hover:bg-zinc-600" onclick="updateCount('posters', 1)">+</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Estimation (Compacted) -->
+            <div class="bg-zinc-800 rounded-lg p-4">
+                <div class="grid grid-cols-2 divide-x divide-zinc-700 text-center">
+                    <div class="pr-2">
+                        <div class="text-sm font-medium text-gray-400">Allotted Shoot Time</div>
+                        <div id="shoot-time" class="text-2xl font-extrabold text-white mt-1">0 Hrs</div>
+                    </div>
+                    <div class="pl-2">
+                        <div class="text-sm font-medium text-gray-400">Total Estimation</div>
+                        <div id="total-price" class="text-2xl font-extrabold text-yellow-500 mt-1">₹0</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- STATE ---
+        let state = {
+            cameras: 1,
+            reels: 5,
+            fullLength: 0,
+            posters: 0,
+            sameShoot: true
+        };
+
+        // --- DOM ELEMENTS ---
+        const elements = {
+            cam1: document.getElementById('cam-1'),
+            cam2: document.getElementById('cam-2'),
+            cam3: document.getElementById('cam-3'),
+            reelsCount: document.getElementById('reels-count'),
+            fullLengthCount: document.getElementById('full-length-count'),
+            fullLengthDuration: document.getElementById('full-length-duration'),
+            durationContainer: document.getElementById('duration-container'),
+            postersCount: document.getElementById('posters-count'),
+            sameShootCheck: document.getElementById('same-shoot'),
+            sameShootContainer: document.getElementById('same-shoot-container'),
+            shootTime: document.getElementById('shoot-time'),
+            totalPrice: document.getElementById('total-price')
+        };
+        
+        // --- FUNCTIONS ---
+
+        // Set number of cameras
+        function setCameras(num) {
+            state.cameras = num;
+            
+            // Update button styles
+            [elements.cam1, elements.cam2, elements.cam3].forEach((btn, index) => {
+                if (index + 1 === num) {
+                    btn.classList.replace('btn-toggle-inactive', 'btn-toggle-active');
+                } else {
+                    btn.classList.replace('btn-toggle-active', 'btn-toggle-inactive');
+                }
+            });
+            
+            calculatePrice();
+        }
+
+        // Update counts for Reels, Full Length, Posters
+        function updateCount(type, amount) {
+            let min = 0;
+            if (type === 'reels') min = 5; // Reels have a minimum of 5
+            
+            if (state[type] + amount >= min) {
+                state[type] += amount;
+            }
+            
+            calculatePrice();
+        }
+
+        // Main calculation logic
+        function calculatePrice() {
+            // Read checkbox state
+            state.sameShoot = elements.sameShootCheck.checked;
+
+            let totalShootHours = 0;
+            let totalShootCost = 0;
+            let totalReelCost = 0;
+            let totalFullLengthCost = 0;
+            let totalPosterCost = 0;
+
+            const cam = state.cameras;
+            const reels = state.reels;
+            const fullLength = state.fullLength;
+            const posters = state.posters;
+
+            // --- 1. Calculate Total Shoot Hours ---
+            // 1 hour for every 2 reels, rounded up
+            let reelShootHours = Math.ceil(reels / 2);
+            
+            let fullLengthShootHours = 0;
+            if (fullLength > 0 && !state.sameShoot) {
+                // 1 hour for every 2 full length videos, rounded up
+                fullLengthShootHours = Math.ceil(fullLength / 2);
+            }
+            
+            totalShootHours = reelShootHours + fullLengthShootHours;
+
+            // --- 2. Calculate Total Shoot Cost ---
+            if (totalShootHours > 0) {
+                if (cam === 1) {
+                    // 1 Cam: 1500 base + 1000/hr extra
+                    totalShootCost = 1500 + Math.max(0, totalShootHours - 1) * 1000;
+                } else if (cam === 2) {
+                    // 2 Cam: 2500 base + 2000/hr extra
+                    totalShootCost = 2500 + Math.max(0, totalShootHours - 1) * 2000;
+                } else if (cam === 3) {
+                    // 3 Cam: 3500 base, +3500 for 2nd hr, +2500/hr for remaining
+                    totalShootCost = 3500; // 1st hour
+                    if (totalShootHours > 1) {
+                        totalShootCost += 3500; // 2nd hour
+                    }
+                    if (totalShootHours > 2) {
+                        totalShootCost += (totalShootHours - 2) * 2500; // 3rd+ hours
+                    }
+                }
+            }
+
+            // --- 3. Calculate Reel Cost ---
+            // 3-cam setup has a different reel price
+            const reelRate = (cam === 3) ? 4500 : 3500;
+            totalReelCost = reels * reelRate;
+
+            // --- 4. Calculate Full Length Video Cost ---
+            if (fullLength > 0) {
+                // 1 hour editing per video, cost depends on camera
+                let editRate = 1500; // 1 cam
+                if (cam === 2) editRate = 2500;
+                if (cam === 3) editRate = 3500;
+                totalFullLengthCost = fullLength * editRate;
+            }
+
+            // --- 5. Calculate Poster Cost ---
+            totalPosterCost = posters * 500;
+            
+            // --- 6. Calculate Total Price ---
+            const total = totalShootCost + totalReelCost + totalFullLengthCost + totalPosterCost;
+            
+            // --- 7. Update UI ---
+            updateUI(total, totalShootHours);
+        }
+
+        // Update the UI with new values
+        function updateUI(total, shootHours) {
+            // Update counts
+            elements.reelsCount.textContent = state.reels;
+            elements.fullLengthCount.textContent = state.fullLength;
+            elements.postersCount.textContent = state.posters;
+            
+            // Calculate and update duration
+            const totalDuration = state.fullLength * 15;
+            elements.fullLengthDuration.textContent = `${totalDuration} mins`;
+
+            // Hide/show conditional elements
+            if (state.fullLength > 0) {
+                elements.durationContainer.style.display = 'block';
+                // "Same video" checkbox only makes sense if both reels and videos are selected
+                if (state.reels > 4) {
+                    elements.sameShootContainer.style.display = 'flex';
+                } else {
+                    elements.sameShootContainer.style.display = 'none';
+                }
+            } else {
+                elements.durationContainer.style.display = 'none';
+                elements.sameShootContainer.style.display = 'none';
+            }
+            
+            // Update totals
+            const formatter = new Intl.NumberFormat('en-IN');
+            elements.totalPrice.textContent = `₹${formatter.format(total)}`;
+            elements.shootTime.textContent = `${shootHours} Hrs`;
+        }
+
+        // --- INITIALIZATION ---
+        // Run once on page load to set initial state
+        document.addEventListener('DOMContentLoaded', () => {
+            calculatePrice();
+        });
+
+    </script>
+</body>
+</html>
