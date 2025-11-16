@@ -257,6 +257,20 @@
             
             totalShootHours = reelShootHours + fullLengthShootHours;
 
+            // --- 1b. Apply New Minimum Shoot Time Rule ---
+            // "Always maintain allotted shoot time 30 higher than Full length video total"
+            if (fullLength > 0) {
+                // total duration in minutes
+                const totalFullLengthDurationMins = state.fullLength * 15;
+                // minimum shoot time in minutes (duration + 30)
+                const minShootTimeMins = totalFullLengthDurationMins + 30;
+                // minimum shoot time in hours, rounded up
+                const minShootTimeHours = Math.ceil(minShootTimeMins / 60);
+                
+                // Ensure totalShootHours is at least this new minimum
+                totalShootHours = Math.max(totalShootHours, minShootTimeHours);
+            }
+
             // --- 2. Calculate Total Shoot Cost ---
             if (totalShootHours > 0) {
                 if (cam === 1) {
